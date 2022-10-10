@@ -60,7 +60,7 @@ async fn notify_release(
 
     let config: Config = load_config();
 
-    let service = match config.image_to_service.get(&payload.package.name) {
+    let service = match config.image_to_service.get(&(payload.package.namespace + "/" + &payload.package.name)) {
         None => return StatusCode::OK.into_response(),
         Some(service) => service,
     };
