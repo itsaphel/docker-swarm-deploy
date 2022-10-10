@@ -12,7 +12,7 @@ WORKDIR /app
 
 COPY --from=build /app/target/release/docker-swarm-deploy .
 
-EXPOSE 5123
+EXPOSE 3000
 
 ENTRYPOINT ["./docker-swarm-deploy"]
 
