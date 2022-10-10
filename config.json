@@ -1,0 +1,8 @@
+{
+  "image_to_service": {
+    "itsaphel/docker-swarm-deploy": {
+      "service_name": "docker-swarm-deploy",
+      "docker_stack_file": "docker-swarm-deploy.yaml"
+    }
+  }
+}
