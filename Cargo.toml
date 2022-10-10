@@ -2,8 +2,13 @@
 name = "docker-swarm-deploy"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/itsaphel/docker-swarm-deploy"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+bench = false
+path = "src/main.rs"
+name = "docker-swarm-deploy"
 
 [dependencies]
 axum = "0.5"

@@ -2,8 +2,12 @@
 FROM rust:slim-bullseye as build
 WORKDIR /app
 
-COPY . .
+COPY Cargo.lock .
+COPY Cargo.toml .
+RUN mkdir .cargo
+RUN cargo vendor > .cargo/config
 
+COPY ./src src
 RUN cargo build --release
 
 # runtime
@@ -15,5 +19,3 @@ COPY --from=build /app/target/release/docker-swarm-deploy .
 EXPOSE 3000
 
 ENTRYPOINT ["./docker-swarm-deploy"]
-
-# TODO: Cache dependencies in a dummy build

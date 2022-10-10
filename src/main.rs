@@ -1,21 +1,22 @@
-mod middleware;
-
 use std::collections::HashMap;
+use std::env;
 use std::fs::File;
+use std::io::{self, Write};
 use std::net::SocketAddr;
 use std::process::{Command, Stdio};
-use std::io::{self, Write};
-use std::env;
+
 use axum::{
-    routing::{get, post},
-    http::{StatusCode, HeaderMap},
-    middleware::{self as AxumMiddleware},
-    response::IntoResponse,
-    Json, Router, body,
+    middleware::self as AxumMiddleware,
+    body,
+    http::{HeaderMap, StatusCode},
+    Json,
+    response::IntoResponse, Router, routing::{get, post},
 };
 use serde::Deserialize;
 use tower::ServiceBuilder;
 use tower_http::ServiceBuilderExt;
+
+mod middleware;
 
 #[tokio::main]
 async fn main() {
@@ -33,7 +34,7 @@ async fn main() {
             ),
         );
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
     tracing::debug!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
