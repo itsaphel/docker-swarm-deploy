@@ -1,5 +1,5 @@
 # build
-FROM rust:slim-bullseye as build
+FROM rust:bullseye as build
 WORKDIR /app
 
 COPY Cargo.lock .
@@ -11,7 +11,7 @@ COPY ./src src
 RUN cargo build --release
 
 # runtime
-FROM debian:bullseye-slim
+FROM debian:bullseye
 WORKDIR /app
 
 RUN curl -sSL https://get.docker.com/ | sh
