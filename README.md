@@ -5,12 +5,12 @@ A tool for automating deployments from a push to GitHub to your Docker Swarm clu
 ## Motivation
 
 It's common to want a CI/CD workflow that automatically deploys a new release onto your servers if a successful candidate is built.
-There are many nice ways to do this in the Kubernetes ecosystem (like [Flux](https://fluxcd.io/)) but the tooling for Docker Swarm is lacking.
-Most tutorials suggest adding your SSH key to your CI tool and having it deploy onto your server. Having your CI/CD tool SSH into your production/dev
-systems isn't ideal from a security standpoint. Plus, users who can run `docker` commands effectively have root control of the system.
+There are many nice ways to do this in the Kubernetes ecosystem (eg [Flux](https://fluxcd.io/)) but not so many nice tools for Docker Swarm.
+Most tutorials suggest adding your SSH key to your CI tool and having it deploy onto your server. But having your CI/CD tool SSH into your production/dev
+systems isn't ideal from a security standpoint, and users who can run `docker` commands effectively have root control of the system.
 
-This is a little tool which runs in your Docker Swarm cluster and exposes a HTTP server. GitHub sends a webhook to it once a new Docker image is created,
-and this tool issues a `docker stack deploy` from within the cluster in response.
+Enter `docker-swarm-deploy`: a little tool which runs in your Docker Swarm cluster and exposes a HTTP server. GitHub sends a webhook to it once a new Docker image is created,
+which triggers a `docker stack deploy` being ran from within the cluster by this tool.
 
 ## Setup
 
@@ -20,16 +20,16 @@ The config takes a mapping of Docker image name to service information (the serv
 Then log into your Swarm manager and run (replacing the environment variable values):
 ```
 docker service create \
---name docker-swarm-deploy \
---with-registry-auth \
---constraint "node.role==manager" \
---publish=5123:3000 \
---mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
--e DOCKER_REGISTRY="ghcr.io" \
--e DOCKER_USERNAME="github-username" \
--e DOCKER_PASSWORD="PersonalAccessToken" \
--e GITHUB_WEBHOOK_SECRET="WebhookSecret" \
--e INFRA_REPO_PATH="/srv/infra/swarm" \
+  --name docker-swarm-deploy \
+  --with-registry-auth \
+  --constraint "node.role==manager" \
+  --publish=5123:3000 \
+  --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  -e DOCKER_REGISTRY="ghcr.io" \
+  -e DOCKER_USERNAME="github-username" \
+  -e DOCKER_PASSWORD="PersonalAccessToken" \
+  -e GITHUB_WEBHOOK_SECRET="WebhookSecret" \
+  -e INFRA_REPO_PATH="/srv/infra/swarm" \
 itsaphel/docker-swarm-deploy:latest
 ```
 
