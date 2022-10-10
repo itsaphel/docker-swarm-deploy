@@ -8,6 +8,7 @@ RUN cargo build --release
 
 # runtime
 FROM debian:bullseye-slim
+WORKDIR /app
 
 COPY --from=build /app/target/release/docker-swarm-deploy .
 

@@ -25,6 +25,7 @@ docker service create \
   --constraint "node.role==manager" \
   --publish=5123:3000 \
   --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  --mount type=bind,src=/path/to/your/config.json,dst=/app/config.json \
   -e DOCKER_REGISTRY="ghcr.io" \
   -e DOCKER_USERNAME="github-username" \
   -e DOCKER_PASSWORD="PersonalAccessToken" \
