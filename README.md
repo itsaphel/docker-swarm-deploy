@@ -36,7 +36,7 @@ itsaphel/docker-swarm-deploy:latest
 
 For the tool to be able to pull the Docker image, you'll need to specify a username and password for the container registry. For GitHub's Container registry, see [Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry).
 
-`INFRA_REPO_PATH` should point to a directory which contains your services' Swarm stack files. In this infra directory there should be sub-directories (named after the service name) whose contents are that service's Swarm stack file.
+`INFRA_REPO_PATH` should point to a directory which contains your services' Swarm stack files. In this infra directory there should be sub-directories (named after the service name) whose contents contain that service's Swarm stack file.
 
 Other optional environment variables: `DOCKER_PATH` (default `/usr/local/bin/docker`)
 
