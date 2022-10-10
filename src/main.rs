@@ -54,14 +54,14 @@ async fn notify_release(
         .get("X-GitHub-Event")
         .and_then(|header| header.to_str().ok());
 
-    if event_type.is_none() || matches!(event_type, Some(event_type) if event_type != "package" || payload.action != "published") {
+    if event_type.is_none() || matches!(event_type, Some(event_type) if event_type != "package") || payload.action != "published" {
         return (StatusCode::OK, "Irrelevant event. No action needed.").into_response();
     }
 
     let config: Config = load_config();
 
     let service = match config.image_to_service.get(&(payload.package.namespace + "/" + &payload.package.name)) {
-        None => return StatusCode::OK.into_response(),
+        None => return (StatusCode::OK, "Package is not deployed by this cluster. No action taken.").into_response(),
         Some(service) => service,
     };
 
@@ -92,9 +92,9 @@ async fn notify_release(
     io::stderr().write_all(&docker_stack_deploy_command.stderr).unwrap();
 
     if docker_stack_deploy_command.status.success() {
-        StatusCode::OK.into_response()
+        (StatusCode::OK, "Deployment successful.").into_response()
     } else {
-        StatusCode::INTERNAL_SERVER_ERROR.into_response()
+        (StatusCode::INTERNAL_SERVER_ERROR, "Unknown error occurred while deploying").into_response()
     }
 }
 
