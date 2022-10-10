@@ -14,6 +14,8 @@ RUN cargo build --release
 FROM debian:bullseye-slim
 WORKDIR /app
 
+RUN curl -sSL https://get.docker.com/ | sh
+
 COPY --from=build /app/target/release/docker-swarm-deploy .
 
 EXPOSE 3000
