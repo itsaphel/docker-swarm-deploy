@@ -54,7 +54,7 @@ async fn notify_release(
         .get("X-GitHub-Event")
         .and_then(|header| header.to_str().ok());
 
-    if event_type.is_none() || matches!(event_type, Some(event_type) if event_type != "package") {
+    if event_type.is_none() || matches!(event_type, Some(event_type) if event_type != "package" || payload.action != "published") {
         return (StatusCode::OK, "Irrelevant event. No action needed.").into_response();
     }
 
